@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Matriz de Eisenhower</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{--q1:#e5484d;--q2:#2f9e6e;--q3:#f0a020;--q4:#6e7f95;--ink:#1c2430;--muted:#556070;--bg:#eef1f5}
+*{box-sizing:border-box}
+body{margin:0;font-family:Figtree,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--ink);line-height:1.45}
+header{text-align:center;padding:28px 16px 4px}
+h1{margin:0;font-size:2rem;font-weight:800}
+header p{margin:4px 0 0;color:var(--muted)}
+main{max-width:1040px;margin:0 auto;padding:16px}
+:focus-visible{outline:3px solid #2563eb;outline-offset:2px}
+
+form{display:grid;grid-template-columns:repeat(4,1fr);gap:10px 12px;background:#fff;padding:16px;border-radius:12px;box-shadow:0 1px 5px #0002}
+label{display:flex;flex-direction:column;gap:4px;font-size:.88rem;font-weight:600}
+.w2{grid-column:span 2}
+input,select,textarea{font:inherit;font-weight:400;padding:8px 10px;border:1px solid #c3ccd8;border-radius:8px;background:#fff;color:var(--ink);width:100%}
+textarea{resize:vertical;min-height:40px;height:40px}
+.add{align-self:end;font:inherit;font-weight:600;padding:10px 14px;border:0;border-radius:8px;background:var(--ink);color:#fff;cursor:pointer}
+.add:hover{background:#344156}
+.dica{grid-column:1/-1;margin:0;font-size:.85rem;color:var(--muted)}
+
+.matriz{display:grid;grid-template-columns:28px 1fr 1fr;grid-template-rows:auto 1fr 1fr;gap:10px;margin-top:20px}
+.eixo{font-weight:600;font-size:.9rem;color:var(--muted);display:flex;align-items:center;justify-content:center}
+.eixo.v{writing-mode:vertical-rl;transform:rotate(180deg)}
+.q{border-radius:12px;padding:14px;min-height:220px;background:color-mix(in srgb,var(--c) 14%,#fff);border-top:6px solid var(--c)}
+.p1{grid-area:2/2}.p2{grid-area:2/3}.p3{grid-area:3/2}.p4{grid-area:3/3}
+.q h2{margin:0;font-size:1.15rem;display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.q h2 small{font-weight:600;font-size:.8rem;color:#fff;background:var(--c);padding:1px 9px;border-radius:99px}
+.q .desc{margin:2px 0 10px;font-size:.85rem;color:var(--muted)}
+.lista{display:flex;flex-direction:column;gap:6px}
+.tarefa{font:inherit;text-align:left;padding:8px 10px;border:0;border-left:5px solid var(--c);border-radius:6px;background:#fff;color:var(--ink);cursor:pointer;box-shadow:0 1px 2px #0002;display:flex;gap:8px;align-items:center}
+.tarefa:hover{box-shadow:0 2px 6px #0003}
+.tarefa.ok{opacity:.65}
+.tarefa.ok .t{text-decoration:line-through}
+.meta{margin-left:auto;font-size:.78rem;color:var(--muted);white-space:nowrap}
+.tarefa .marca{flex:none;width:18px;height:18px;border:2px solid var(--c);border-radius:50%;display:grid;place-items:center;font-size:.7rem;line-height:1}
+.tarefa.ok .marca{background:var(--c);color:#fff}
+.vazio{margin:0;font-size:.85rem;color:var(--muted);font-style:italic}
+
+.resumo{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:20px}
+.col{background:#fff;border-radius:12px;padding:14px;box-shadow:0 1px 5px #0002}
+.col h2{margin:0 0 10px;font-size:1.05rem;display:flex;justify-content:space-between;align-items:center}
+.col h2 small{font-size:.8rem;font-weight:600;color:#fff;background:var(--ink);padding:1px 9px;border-radius:99px}
+.rodape{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:16px;font-size:.85rem;color:var(--muted)}
+.rodape button{font:inherit;font-weight:600;padding:7px 12px;border-radius:8px;border:2px solid var(--ink);background:#fff;color:var(--ink);cursor:pointer}
+#aviso{font-weight:600;color:var(--ink)}
+dialog{border:0;border-radius:14px;padding:0;width:min(440px,92vw);box-shadow:0 10px 40px #0005}
+dialog::backdrop{background:#1c243088}
+.topo{padding:14px 18px;color:#fff;background:var(--c)}
+.topo p{margin:0;font-size:.85rem;opacity:.95}
+.topo h3{margin:2px 0 0;font-size:1.25rem;word-break:break-word}
+.corpo{padding:16px 18px}
+.corpo dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:6px 14px}
+.corpo dt{font-weight:600}
+.corpo dd{margin:0;word-break:break-word;white-space:pre-wrap}
+.acoes{display:flex;flex-wrap:wrap;gap:8px;padding:0 18px 18px}
+.acoes button{font:inherit;font-weight:600;padding:9px 12px;border-radius:8px;border:2px solid var(--ink);background:#fff;color:var(--ink);cursor:pointer}
+.acoes .principal{background:var(--q2);border-color:var(--q2);color:#fff}
+.acoes .principal.desfazer{background:var(--q3);border-color:var(--q3);color:#1c2430}
+.acoes .perigo{border-color:var(--q1);color:var(--q1)}
+
+@media (max-width:700px){
+  form{grid-template-columns:1fr 1fr}
+  .w2{grid-column:1/-1}
+  .matriz{grid-template-columns:1fr}
+  .eixo{display:none}
+  .q{grid-area:auto}
+  .resumo{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<header>
+  <h1>Matriz de Eisenhower</h1>
+  <p>Organize suas tarefas pelo que é urgente e pelo que é importante.</p>
+</header>
+
+<main>
+  <form id="form">
+    <label class="w2">Tarefa
+      <input id="titulo" required maxlength="80" placeholder="Ex.: Entregar relatório do estágio">
+    </label>
+    <label>Urgente?
+      <select id="urgente"><option value="1">Sim</option><option value="0">Não</option></select>
+    </label>
+    <label>Importante?
+      <select id="importante"><option value="1">Sim</option><option value="0">Não</option></select>
+    </label>
+    <label class="w2">Detalhes (opcional)
+      <textarea id="detalhes" maxlength="500" placeholder="Anotações sobre a tarefa"></textarea>
+    </label>
+    <label>Prazo (opcional)
+      <input id="prazo" type="date">
+    </label>
+    <button class="add" type="submit">Adicionar tarefa</button>
+    <p class="dica" id="dica"></p>
+  </form>
+
+  <section class="matriz" id="matriz" aria-label="Matriz de Eisenhower">
+    <div class="eixo" style="grid-area:1/2">Urgente</div>
+    <div class="eixo" style="grid-area:1/3">Não urgente</div>
+    <div class="eixo v" style="grid-area:2/1">Importante</div>
+    <div class="eixo v" style="grid-area:3/1">Não importante</div>
+  </section>
+
+  <section class="resumo" aria-label="Todas as tarefas">
+    <div class="col"><h2>Pendentes <small id="n-pend">0</small></h2><div class="lista" id="l-pend"></div></div>
+    <div class="col"><h2>Concluídas <small id="n-ok">0</small></h2><div class="lista" id="l-ok"></div></div>
+  </section>
+
+  <footer class="rodape">
+    <span id="salvo">As tarefas são salvas automaticamente neste navegador.</span>
+    <button type="button" id="exportar">Exportar backup</button>
+    <button type="button" id="importar">Importar backup</button>
+    <input type="file" id="arquivo" accept="application/json,.json" hidden>
+    <span id="aviso" role="status"></span>
+  </footer>
+</main>
+
+<dialog id="modal">
+  <div class="topo" id="m-topo"><p id="m-quad"></p><h3 id="m-titulo"></h3></div>
+  <div class="corpo"><dl>
+    <dt>Status</dt><dd id="m-status"></dd>
+    <dt>Prazo</dt><dd id="m-prazo"></dd>
+    <dt>Criada em</dt><dd id="m-criada"></dd>
+    <dt>Detalhes</dt><dd id="m-detalhes"></dd>
+  </dl></div>
+  <div class="acoes">
+    <button class="principal" id="m-toggle"></button>
+    <button class="perigo" id="m-excluir">Excluir</button>
+    <button id="m-fechar">Fechar</button>
+  </div>
+</dialog>
+
+<script>
+const Q = {
+  1: {nome: 'Fazer agora', desc: 'Urgente e importante', cor: 'var(--q1)'},
+  2: {nome: 'Agendar', desc: 'Importante, mas não urgente', cor: 'var(--q2)'},
+  3: {nome: 'Delegar', desc: 'Urgente, mas não importante', cor: 'var(--q3)'},
+  4: {nome: 'Eliminar', desc: 'Nem urgente, nem importante', cor: 'var(--q4)'}
+};
+const KEY = 'eisenhower-tarefas';
+const $ = id => document.getElementById(id);
+const quadrante = (u, i) => u && i ? 1 : i ? 2 : u ? 3 : 4;
+
+function carregar() { try { return JSON.parse(localStorage.getItem(KEY)) || []; } catch (e) { return []; } }
+function salvar() {
+  try {
+    localStorage.setItem(KEY, JSON.stringify(tarefas));
+    $('salvo').textContent = 'Salvo automaticamente neste navegador às ' + new Date().toLocaleTimeString('pt-BR', {hour: '2-digit', minute: '2-digit'}) + '.';
+    $('aviso').textContent = '';
+  } catch (e) {
+    $('aviso').textContent = 'Não foi possível salvar neste navegador. Exporte um backup para não perder suas tarefas.';
+  }
+}
+let tarefas = carregar();
+let atual = null;
+
+// Monta os quadrantes (posição definida por CSS: .p1 a .p4)
+const matriz = $('matriz');
+[1, 2, 3, 4].forEach(n => {
+  const s = document.createElement('section');
+  s.className = 'q p' + n;
+  s.id = 'q' + n;
+  s.style.setProperty('--c', Q[n].cor);
+  s.innerHTML = '<h2><span>' + Q[n].nome + '</span><small></small></h2><p class="desc">' + Q[n].desc + '</p><div class="lista"></div>';
+  matriz.appendChild(s);
+});
+
+function dataBR(iso) { const [a, m, d] = iso.split('-'); return d + '/' + m + '/' + a; }
+
+function dataCurta(iso) { return new Date(iso).toLocaleDateString('pt-BR'); }
+
+function botaoTarefa(t, meta) {
+  const b = document.createElement('button');
+  b.type = 'button';
+  b.className = 'tarefa' + (t.feita ? ' ok' : '');
+  b.style.setProperty('--c', Q[t.q].cor);
+  const m = document.createElement('span');
+  m.className = 'marca';
+  m.textContent = t.feita ? '✓' : '';
+  const txt = document.createElement('span');
+  txt.className = 't';
+  txt.textContent = t.titulo;
+  b.append(m, txt);
+  if (meta) {
+    const i = document.createElement('span');
+    i.className = 'meta';
+    i.textContent = meta;
+    b.append(i);
+  }
+  b.onclick = () => abrir(t.id);
+  return b;
+}
+
+function vazio(msg) {
+  const p = document.createElement('p');
+  p.className = 'vazio';
+  p.textContent = msg;
+  return p;
+}
+
+function desenhar() {
+  [1, 2, 3, 4].forEach(n => {
+    const box = $('q' + n);
+    const lista = box.querySelector('.lista');
+    const itens = tarefas.filter(t => t.q === n);
+    lista.innerHTML = '';
+    box.querySelector('small').textContent = itens.length;
+    if (!itens.length) lista.appendChild(vazio('Nenhuma tarefa aqui.'));
+    itens.forEach(t => lista.appendChild(botaoTarefa(t)));
+  });
+
+  const pend = tarefas.filter(t => !t.feita).sort((a, b) => a.q - b.q || a.id - b.id);
+  const ok = tarefas.filter(t => t.feita).sort((a, b) => (b.concluidaEm || '').localeCompare(a.concluidaEm || ''));
+  $('n-pend').textContent = pend.length;
+  $('n-ok').textContent = ok.length;
+  const lp = $('l-pend'), lo = $('l-ok');
+  lp.innerHTML = '';
+  lo.innerHTML = '';
+  if (!pend.length) lp.appendChild(vazio('Nenhuma tarefa pendente.'));
+  pend.forEach(t => lp.appendChild(botaoTarefa(t, Q[t.q].nome)));
+  if (!ok.length) lo.appendChild(vazio('Nenhuma tarefa concluída ainda.'));
+  ok.forEach(t => lo.appendChild(botaoTarefa(t, t.concluidaEm ? dataCurta(t.concluidaEm) : '')));
+}
+
+function abrir(id) {
+  const t = tarefas.find(x => x.id === id);
+  if (!t) return;
+  atual = id;
+  $('modal').style.setProperty('--c', Q[t.q].cor);
+  $('m-quad').textContent = Q[t.q].nome + ' (' + Q[t.q].desc.toLowerCase() + ')';
+  $('m-titulo').textContent = t.titulo;
+  $('m-status').textContent = t.feita ? 'Cumprida' + (t.concluidaEm ? ' em ' + dataCurta(t.concluidaEm) : '') : 'Não cumprida';
+  $('m-prazo').textContent = t.prazo ? dataBR(t.prazo) : 'Sem prazo';
+  $('m-criada').textContent = new Date(t.criada).toLocaleDateString('pt-BR');
+  $('m-detalhes').textContent = t.detalhes || 'Sem detalhes';
+  const tg = $('m-toggle');
+  tg.textContent = t.feita ? 'Marcar como não cumprida' : 'Marcar como cumprida';
+  tg.classList.toggle('desfazer', t.feita);
+  $('modal').showModal();
+}
+
+$('m-toggle').onclick = () => {
+  const t = tarefas.find(x => x.id === atual);
+  if (t) { t.feita = !t.feita; t.concluidaEm = t.feita ? new Date().toISOString() : null; salvar(); desenhar(); }
+  $('modal').close();
+};
+$('m-excluir').onclick = () => {
+  tarefas = tarefas.filter(x => x.id !== atual);
+  salvar(); desenhar(); $('modal').close();
+};
+$('m-fechar').onclick = () => $('modal').close();
+$('modal').addEventListener('click', e => { if (e.target === $('modal')) $('modal').close(); });
+
+function dica() {
+  const n = quadrante($('urgente').value === '1', $('importante').value === '1');
+  $('dica').textContent = 'Esta tarefa irá para o quadrante "' + Q[n].nome + '" (' + Q[n].desc.toLowerCase() + ').';
+}
+$('urgente').onchange = $('importante').onchange = dica;
+
+$('form').addEventListener('submit', e => {
+  e.preventDefault();
+  const titulo = $('titulo').value.trim();
+  if (!titulo) return;
+  tarefas.push({
+    id: Date.now(),
+    titulo,
+    detalhes: $('detalhes').value.trim(),
+    prazo: $('prazo').value,
+    q: quadrante($('urgente').value === '1', $('importante').value === '1'),
+    feita: false,
+    concluidaEm: null,
+    criada: new Date().toISOString()
+  });
+  salvar(); desenhar();
+  $('form').reset(); dica(); $('titulo').focus();
+});
+
+$('exportar').onclick = () => {
+  const blob = new Blob([JSON.stringify({versao: 1, tarefas}, null, 2)], {type: 'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'matriz-eisenhower-backup-' + new Date().toISOString().slice(0, 10) + '.json';
+  a.click();
+  URL.revokeObjectURL(a.href);
+};
+$('importar').onclick = () => $('arquivo').click();
+$('arquivo').onchange = e => {
+  const f = e.target.files[0];
+  if (!f) return;
+  const r = new FileReader();
+  r.onload = () => {
+    try {
+      const d = JSON.parse(r.result);
+      const itens = Array.isArray(d) ? d : d.tarefas;
+      if (!Array.isArray(itens)) throw new Error('formato');
+      const ids = new Set(tarefas.map(t => t.id));
+      let novas = 0;
+      itens.forEach(t => {
+        if (t && t.id != null && t.titulo && Q[t.q] && !ids.has(t.id)) {
+          tarefas.push({id: t.id, titulo: String(t.titulo), detalhes: String(t.detalhes || ''), prazo: t.prazo || '',
+            q: t.q, feita: !!t.feita, concluidaEm: t.concluidaEm || null, criada: t.criada || new Date().toISOString()});
+          ids.add(t.id);
+          novas++;
+        }
+      });
+      salvar(); desenhar();
+      $('aviso').textContent = novas + ' tarefa(s) importada(s).';
+    } catch (err) {
+      $('aviso').textContent = 'Arquivo inválido. Use um backup exportado por este site.';
+    }
+    e.target.value = '';
+  };
+  r.readAsText(f);
+};
+
+// Pede ao navegador para não apagar os dados automaticamente
+try { if (navigator.storage && navigator.storage.persist) navigator.storage.persist(); } catch (e) {}
+
+dica();
+desenhar();
+</script>
+</body>
+</html>
