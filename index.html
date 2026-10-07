@@ -9,23 +9,38 @@
 <style>
 :root{--q1:#e5484d;--q2:#2f9e6e;--q3:#f0a020;--q4:#6e7f95;--ink:#1c2430;--muted:#556070;--bg:#eef1f5}
 *{box-sizing:border-box}
+[hidden]{display:none!important}
 body{margin:0;font-family:Figtree,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--ink);line-height:1.45}
 header{text-align:center;padding:28px 16px 4px}
 h1{margin:0;font-size:2rem;font-weight:800}
 header p{margin:4px 0 0;color:var(--muted)}
 main{max-width:1040px;margin:0 auto;padding:16px}
 :focus-visible{outline:3px solid #2563eb;outline-offset:2px}
-
-form{display:grid;grid-template-columns:repeat(4,1fr);gap:10px 12px;background:#fff;padding:16px;border-radius:12px;box-shadow:0 1px 5px #0002}
-label{display:flex;flex-direction:column;gap:4px;font-size:.88rem;font-weight:600}
-.w2{grid-column:span 2}
 input,select,textarea{font:inherit;font-weight:400;padding:8px 10px;border:1px solid #c3ccd8;border-radius:8px;background:#fff;color:var(--ink);width:100%}
-textarea{resize:vertical;min-height:40px;height:40px}
-.add{align-self:end;font:inherit;font-weight:600;padding:10px 14px;border:0;border-radius:8px;background:var(--ink);color:#fff;cursor:pointer}
-.add:hover{background:#344156}
-.dica{grid-column:1/-1;margin:0;font-size:.85rem;color:var(--muted)}
+label{display:flex;flex-direction:column;gap:4px;font-size:.88rem;font-weight:600}
+.btn{font:inherit;font-weight:600;padding:9px 14px;border-radius:8px;border:2px solid var(--ink);background:#fff;color:var(--ink);cursor:pointer}
+.btn.cheio{background:var(--ink);color:#fff}
+.btn.cheio:hover{background:#344156}
 
-.matriz{display:grid;grid-template-columns:28px 1fr 1fr;grid-template-rows:auto 1fr 1fr;gap:10px;margin-top:20px}
+/* páginas */
+nav{display:flex;justify-content:center;gap:8px;margin-top:14px;flex-wrap:wrap}
+nav a{display:flex;align-items:center;gap:8px;padding:9px 20px;border-radius:99px;background:#fff;color:var(--ink);text-decoration:none;font-weight:600;border:2px solid var(--ink)}
+nav a[aria-current=page]{background:var(--ink);color:#fff}
+nav a small{font-size:.78rem;font-weight:600;background:var(--q1);color:#fff;border-radius:99px;padding:0 8px}
+#titulo-pagina{margin:6px 0 0;font-size:1.3rem;text-align:center}
+.banner{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:12px;padding:10px 14px;border-radius:10px;background:#fff4d6;border:1px solid var(--q3);font-size:.9rem}
+
+/* formulário */
+#form{display:grid;grid-template-columns:repeat(4,1fr);gap:10px 12px;background:#fff;padding:16px;border-radius:12px;box-shadow:0 1px 5px #0002;margin-top:12px}
+.w2{grid-column:span 2}
+textarea{resize:vertical;min-height:40px;height:40px}
+#form .btn{align-self:end;padding:10px 14px}
+.dica{grid-column:span 3;margin:0;font-size:.85rem;color:var(--muted)}
+
+/* matriz */
+.barra{display:flex;flex-direction:row;justify-content:flex-end;align-items:center;gap:8px;margin-top:20px;font-size:.88rem;font-weight:600}
+.barra select{width:auto}
+.matriz{display:grid;grid-template-columns:28px 1fr 1fr;grid-template-rows:auto 1fr 1fr;gap:10px;margin-top:10px}
 .eixo{font-weight:600;font-size:.9rem;color:var(--muted);display:flex;align-items:center;justify-content:center}
 .eixo.v{writing-mode:vertical-rl;transform:rotate(180deg)}
 .q{border-radius:12px;padding:14px;min-height:220px;background:color-mix(in srgb,var(--c) 14%,#fff);border-top:6px solid var(--c)}
@@ -38,18 +53,23 @@ textarea{resize:vertical;min-height:40px;height:40px}
 .tarefa:hover{box-shadow:0 2px 6px #0003}
 .tarefa.ok{opacity:.65}
 .tarefa.ok .t{text-decoration:line-through}
-.meta{margin-left:auto;font-size:.78rem;color:var(--muted);white-space:nowrap}
+.dir{margin-left:auto;display:flex;gap:10px;align-items:center}
+.meta{font-size:.78rem;color:var(--muted);white-space:nowrap}
+.pips{font-size:.7rem;letter-spacing:1px;color:var(--c);white-space:nowrap}
 .tarefa .marca{flex:none;width:18px;height:18px;border:2px solid var(--c);border-radius:50%;display:grid;place-items:center;font-size:.7rem;line-height:1}
 .tarefa.ok .marca{background:var(--c);color:#fff}
 .vazio{margin:0;font-size:.85rem;color:var(--muted);font-style:italic}
 
+/* pendentes e concluídas */
 .resumo{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:20px}
 .col{background:#fff;border-radius:12px;padding:14px;box-shadow:0 1px 5px #0002}
 .col h2{margin:0 0 10px;font-size:1.05rem;display:flex;justify-content:space-between;align-items:center}
 .col h2 small{font-size:.8rem;font-weight:600;color:#fff;background:var(--ink);padding:1px 9px;border-radius:99px}
 .rodape{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:16px;font-size:.85rem;color:var(--muted)}
-.rodape button{font:inherit;font-weight:600;padding:7px 12px;border-radius:8px;border:2px solid var(--ink);background:#fff;color:var(--ink);cursor:pointer}
+.rodape .btn{padding:7px 12px}
 #aviso{font-weight:600;color:var(--ink)}
+
+/* detalhes */
 dialog{border:0;border-radius:14px;padding:0;width:min(440px,92vw);box-shadow:0 10px 40px #0005}
 dialog::backdrop{background:#1c243088}
 .topo{padding:14px 18px;color:#fff;background:var(--c)}
@@ -60,14 +80,13 @@ dialog::backdrop{background:#1c243088}
 .corpo dt{font-weight:600}
 .corpo dd{margin:0;word-break:break-word;white-space:pre-wrap}
 .acoes{display:flex;flex-wrap:wrap;gap:8px;padding:0 18px 18px}
-.acoes button{font:inherit;font-weight:600;padding:9px 12px;border-radius:8px;border:2px solid var(--ink);background:#fff;color:var(--ink);cursor:pointer}
 .acoes .principal{background:var(--q2);border-color:var(--q2);color:#fff}
 .acoes .principal.desfazer{background:var(--q3);border-color:var(--q3);color:#1c2430}
 .acoes .perigo{border-color:var(--q1);color:var(--q1)}
 
 @media (max-width:700px){
-  form{grid-template-columns:1fr 1fr}
-  .w2{grid-column:1/-1}
+  #form{grid-template-columns:1fr 1fr}
+  .w2,.dica{grid-column:1/-1}
   .matriz{grid-template-columns:1fr}
   .eixo{display:none}
   .q{grid-area:auto}
@@ -81,10 +100,22 @@ dialog::backdrop{background:#1c243088}
   <p>Organize suas tarefas pelo que é urgente e pelo que é importante.</p>
 </header>
 
+<nav aria-label="Páginas">
+  <a href="#escritorio" id="nav-escritorio">Escritório <small>0</small></a>
+  <a href="#faculdade" id="nav-faculdade">Faculdade <small>0</small></a>
+</nav>
+
 <main>
+  <h2 id="titulo-pagina"></h2>
+
+  <div class="banner" id="banner-antigas" hidden>
+    <span id="txt-antigas"></span>
+    <button class="btn cheio" type="button" id="b-antigas">Trazer para esta página</button>
+  </div>
+
   <form id="form">
     <label class="w2">Tarefa
-      <input id="titulo" required maxlength="80" placeholder="Ex.: Entregar relatório do estágio">
+      <input id="titulo" required maxlength="80" placeholder="Ex.: Entregar relatório">
     </label>
     <label>Urgente?
       <select id="urgente"><option value="1">Sim</option><option value="0">Não</option></select>
@@ -98,9 +129,25 @@ dialog::backdrop{background:#1c243088}
     <label>Prazo (opcional)
       <input id="prazo" type="date">
     </label>
-    <button class="add" type="submit">Adicionar tarefa</button>
+    <label>Esforço
+      <select id="esforco">
+        <option value="1">1 - Muito fácil</option>
+        <option value="2">2 - Fácil</option>
+        <option value="3" selected>3 - Médio</option>
+        <option value="4">4 - Difícil</option>
+        <option value="5">5 - Muito difícil</option>
+      </select>
+    </label>
     <p class="dica" id="dica"></p>
+    <button class="btn cheio" type="submit">Adicionar tarefa</button>
   </form>
+
+  <label class="barra">Ordem dentro dos quadrantes
+    <select id="ordem">
+      <option value="asc">Mais fácil primeiro</option>
+      <option value="desc">Mais difícil primeiro</option>
+    </select>
+  </label>
 
   <section class="matriz" id="matriz" aria-label="Matriz de Eisenhower">
     <div class="eixo" style="grid-area:1/2">Urgente</div>
@@ -109,15 +156,15 @@ dialog::backdrop{background:#1c243088}
     <div class="eixo v" style="grid-area:3/1">Não importante</div>
   </section>
 
-  <section class="resumo" aria-label="Todas as tarefas">
+  <section class="resumo" aria-label="Todas as tarefas desta página">
     <div class="col"><h2>Pendentes <small id="n-pend">0</small></h2><div class="lista" id="l-pend"></div></div>
     <div class="col"><h2>Concluídas <small id="n-ok">0</small></h2><div class="lista" id="l-ok"></div></div>
   </section>
 
   <footer class="rodape">
-    <span id="salvo">As tarefas são salvas automaticamente neste navegador.</span>
-    <button type="button" id="exportar">Exportar backup</button>
-    <button type="button" id="importar">Importar backup</button>
+    <span>As tarefas ficam salvas neste navegador, neste aparelho.</span>
+    <button class="btn" type="button" id="exportar">Exportar backup</button>
+    <button class="btn" type="button" id="importar">Importar backup</button>
     <input type="file" id="arquivo" accept="application/json,.json" hidden>
     <span id="aviso" role="status"></span>
   </footer>
@@ -128,13 +175,14 @@ dialog::backdrop{background:#1c243088}
   <div class="corpo"><dl>
     <dt>Status</dt><dd id="m-status"></dd>
     <dt>Prazo</dt><dd id="m-prazo"></dd>
+    <dt>Esforço</dt><dd id="m-esforco"></dd>
     <dt>Criada em</dt><dd id="m-criada"></dd>
     <dt>Detalhes</dt><dd id="m-detalhes"></dd>
   </dl></div>
   <div class="acoes">
-    <button class="principal" id="m-toggle"></button>
-    <button class="perigo" id="m-excluir">Excluir</button>
-    <button id="m-fechar">Fechar</button>
+    <button class="btn principal" id="m-toggle"></button>
+    <button class="btn perigo" id="m-excluir">Excluir</button>
+    <button class="btn" id="m-fechar">Fechar</button>
   </div>
 </dialog>
 
@@ -145,24 +193,72 @@ const Q = {
   3: {nome: 'Delegar', desc: 'Urgente, mas não importante', cor: 'var(--q3)'},
   4: {nome: 'Eliminar', desc: 'Nem urgente, nem importante', cor: 'var(--q4)'}
 };
-const KEY = 'eisenhower-tarefas';
+const PAGINAS = {escritorio: 'Tarefas do escritório', faculdade: 'Tarefas da faculdade'};
+const ESF = {1: 'muito fácil', 2: 'fácil', 3: 'médio', 4: 'difícil', 5: 'muito difícil'};
+const KEY = 'eisenhower-v3';          // dados atuais (as duas páginas)
+const ANTIGA = 'eisenhower-tarefas';  // dados da versão anterior, de uma página só
+const ORDEM = 'eisenhower-ordem';
 const $ = id => document.getElementById(id);
-const quadrante = (u, i) => u && i ? 1 : i ? 2 : u ? 3 : 4;
 
-function carregar() { try { return JSON.parse(localStorage.getItem(KEY)) || []; } catch (e) { return []; } }
+const quadrante = (u, i) => u && i ? 1 : i ? 2 : u ? 3 : 4;
+const pips = n => '●'.repeat(n) + '○'.repeat(5 - n);
+const textoEsforco = n => 'Esforço ' + n + ' de 5 (' + ESF[n] + ')';
+const dataBR = iso => { const [a, m, d] = iso.split('-'); return d + '/' + m + '/' + a; };
+const dataCurta = iso => new Date(iso).toLocaleDateString('pt-BR');
+const novoId = () => (window.crypto && crypto.randomUUID) ? crypto.randomUUID() : Date.now() + '-' + Math.random().toString(36).slice(2);
+const chave = t => t.titulo + '|' + new Date(t.criada).getTime();
+
+let pagina = 'escritorio';
+let atual = null;
+let dados = carregar();
+const tarefas = () => dados[pagina];
+
+// ---------- armazenamento (somente neste navegador) ----------
+function normalizar(t) {
+  if (!t || !t.titulo || !Q[t.q]) return null;
+  return {
+    id: t.id != null ? t.id : novoId(),
+    titulo: String(t.titulo).slice(0, 80),
+    detalhes: String(t.detalhes || '').slice(0, 500),
+    prazo: t.prazo || '',
+    q: t.q,
+    esforco: [1, 2, 3, 4, 5].includes(+t.esforco) ? +t.esforco : 3,
+    feita: !!t.feita,
+    concluidaEm: t.concluidaEm || null,
+    criada: t.criada || new Date().toISOString()
+  };
+}
+function lerLista(l) { return Array.isArray(l) ? l.map(normalizar).filter(Boolean) : []; }
+function carregar() {
+  try {
+    const d = JSON.parse(localStorage.getItem(KEY));
+    if (d) return {escritorio: lerLista(d.escritorio), faculdade: lerLista(d.faculdade)};
+  } catch (e) {}
+  return {escritorio: [], faculdade: []};
+}
 function salvar() {
   try {
-    localStorage.setItem(KEY, JSON.stringify(tarefas));
-    $('salvo').textContent = 'Salvo automaticamente neste navegador às ' + new Date().toLocaleTimeString('pt-BR', {hour: '2-digit', minute: '2-digit'}) + '.';
+    localStorage.setItem(KEY, JSON.stringify(dados));
     $('aviso').textContent = '';
   } catch (e) {
     $('aviso').textContent = 'Não foi possível salvar neste navegador. Exporte um backup para não perder suas tarefas.';
   }
 }
-let tarefas = carregar();
-let atual = null;
+// Soma tarefas a uma página sem duplicar; devolve quantas entraram
+function mesclar(pag, itens) {
+  const lista = dados[pag];
+  const vistas = new Set(lista.map(chave));
+  const ids = new Set(lista.map(t => t.id));
+  let n = 0;
+  lerLista(itens).forEach(t => {
+    if (vistas.has(chave(t))) return;
+    if (ids.has(t.id)) t.id = novoId();
+    vistas.add(chave(t)); ids.add(t.id); lista.push(t); n++;
+  });
+  return n;
+}
 
-// Monta os quadrantes (posição definida por CSS: .p1 a .p4)
+// ---------- tela ----------
 const matriz = $('matriz');
 [1, 2, 3, 4].forEach(n => {
   const s = document.createElement('section');
@@ -172,10 +268,6 @@ const matriz = $('matriz');
   s.innerHTML = '<h2><span>' + Q[n].nome + '</span><small></small></h2><p class="desc">' + Q[n].desc + '</p><div class="lista"></div>';
   matriz.appendChild(s);
 });
-
-function dataBR(iso) { const [a, m, d] = iso.split('-'); return d + '/' + m + '/' + a; }
-
-function dataCurta(iso) { return new Date(iso).toLocaleDateString('pt-BR'); }
 
 function botaoTarefa(t, meta) {
   const b = document.createElement('button');
@@ -188,17 +280,25 @@ function botaoTarefa(t, meta) {
   const txt = document.createElement('span');
   txt.className = 't';
   txt.textContent = t.titulo;
-  b.append(m, txt);
+  const dir = document.createElement('span');
+  dir.className = 'dir';
+  const p = document.createElement('span');
+  p.className = 'pips';
+  p.textContent = pips(t.esforco);
+  p.title = textoEsforco(t.esforco);
+  p.setAttribute('role', 'img');
+  p.setAttribute('aria-label', textoEsforco(t.esforco));
+  dir.append(p);
   if (meta) {
     const i = document.createElement('span');
     i.className = 'meta';
     i.textContent = meta;
-    b.append(i);
+    dir.append(i);
   }
+  b.append(m, txt, dir);
   b.onclick = () => abrir(t.id);
   return b;
 }
-
 function vazio(msg) {
   const p = document.createElement('p');
   p.className = 'vazio';
@@ -206,19 +306,35 @@ function vazio(msg) {
   return p;
 }
 
+const sentido = () => $('ordem').value === 'desc' ? -1 : 1;
+const porEsforco = (a, b) => (a.feita - b.feita) || sentido() * (a.esforco - b.esforco) || a.criada.localeCompare(b.criada);
+
+function antigas() {
+  try { const l = JSON.parse(localStorage.getItem(ANTIGA)); return Array.isArray(l) ? l : []; } catch (e) { return []; }
+}
+
 function desenhar() {
-  [1, 2, 3, 4].forEach(n => {
-    const box = $('q' + n);
-    const lista = box.querySelector('.lista');
-    const itens = tarefas.filter(t => t.q === n);
-    lista.innerHTML = '';
-    box.querySelector('small').textContent = itens.length;
-    if (!itens.length) lista.appendChild(vazio('Nenhuma tarefa aqui.'));
-    itens.forEach(t => lista.appendChild(botaoTarefa(t)));
+  const lista = tarefas();
+  $('titulo-pagina').textContent = PAGINAS[pagina];
+  document.title = PAGINAS[pagina] + ' | Matriz de Eisenhower';
+  Object.keys(PAGINAS).forEach(p => {
+    const a = $('nav-' + p);
+    a.querySelector('small').textContent = dados[p].filter(t => !t.feita).length;
+    if (p === pagina) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current');
   });
 
-  const pend = tarefas.filter(t => !t.feita).sort((a, b) => a.q - b.q || a.id - b.id);
-  const ok = tarefas.filter(t => t.feita).sort((a, b) => (b.concluidaEm || '').localeCompare(a.concluidaEm || ''));
+  [1, 2, 3, 4].forEach(n => {
+    const box = $('q' + n);
+    const el = box.querySelector('.lista');
+    const itens = lista.filter(t => t.q === n).sort(porEsforco);
+    el.innerHTML = '';
+    box.querySelector('small').textContent = itens.length;
+    if (!itens.length) el.appendChild(vazio('Nenhuma tarefa aqui.'));
+    itens.forEach(t => el.appendChild(botaoTarefa(t)));
+  });
+
+  const pend = lista.filter(t => !t.feita).sort((a, b) => a.q - b.q || sentido() * (a.esforco - b.esforco) || a.criada.localeCompare(b.criada));
+  const ok = lista.filter(t => t.feita).sort((a, b) => (b.concluidaEm || '').localeCompare(a.concluidaEm || ''));
   $('n-pend').textContent = pend.length;
   $('n-ok').textContent = ok.length;
   const lp = $('l-pend'), lo = $('l-ok');
@@ -228,18 +344,23 @@ function desenhar() {
   pend.forEach(t => lp.appendChild(botaoTarefa(t, Q[t.q].nome)));
   if (!ok.length) lo.appendChild(vazio('Nenhuma tarefa concluída ainda.'));
   ok.forEach(t => lo.appendChild(botaoTarefa(t, t.concluidaEm ? dataCurta(t.concluidaEm) : '')));
+
+  const velhas = antigas();
+  $('banner-antigas').hidden = !velhas.length;
+  if (velhas.length) $('txt-antigas').textContent = 'Encontramos ' + velhas.length + ' tarefa(s) da versão anterior neste navegador.';
 }
 
 function abrir(id) {
-  const t = tarefas.find(x => x.id === id);
+  const t = tarefas().find(x => x.id === id);
   if (!t) return;
   atual = id;
   $('modal').style.setProperty('--c', Q[t.q].cor);
-  $('m-quad').textContent = Q[t.q].nome + ' (' + Q[t.q].desc.toLowerCase() + ')';
+  $('m-quad').textContent = PAGINAS[pagina] + ' | ' + Q[t.q].nome + ' (' + Q[t.q].desc.toLowerCase() + ')';
   $('m-titulo').textContent = t.titulo;
   $('m-status').textContent = t.feita ? 'Cumprida' + (t.concluidaEm ? ' em ' + dataCurta(t.concluidaEm) : '') : 'Não cumprida';
   $('m-prazo').textContent = t.prazo ? dataBR(t.prazo) : 'Sem prazo';
-  $('m-criada').textContent = new Date(t.criada).toLocaleDateString('pt-BR');
+  $('m-esforco').textContent = pips(t.esforco) + '  ' + t.esforco + ' de 5 (' + ESF[t.esforco] + ')';
+  $('m-criada').textContent = dataCurta(t.criada);
   $('m-detalhes').textContent = t.detalhes || 'Sem detalhes';
   const tg = $('m-toggle');
   tg.textContent = t.feita ? 'Marcar como não cumprida' : 'Marcar como cumprida';
@@ -248,12 +369,12 @@ function abrir(id) {
 }
 
 $('m-toggle').onclick = () => {
-  const t = tarefas.find(x => x.id === atual);
+  const t = tarefas().find(x => x.id === atual);
   if (t) { t.feita = !t.feita; t.concluidaEm = t.feita ? new Date().toISOString() : null; salvar(); desenhar(); }
   $('modal').close();
 };
 $('m-excluir').onclick = () => {
-  tarefas = tarefas.filter(x => x.id !== atual);
+  dados[pagina] = tarefas().filter(x => x.id !== atual);
   salvar(); desenhar(); $('modal').close();
 };
 $('m-fechar').onclick = () => $('modal').close();
@@ -269,12 +390,13 @@ $('form').addEventListener('submit', e => {
   e.preventDefault();
   const titulo = $('titulo').value.trim();
   if (!titulo) return;
-  tarefas.push({
-    id: Date.now(),
+  tarefas().push({
+    id: novoId(),
     titulo,
     detalhes: $('detalhes').value.trim(),
     prazo: $('prazo').value,
     q: quadrante($('urgente').value === '1', $('importante').value === '1'),
+    esforco: +$('esforco').value,
     feita: false,
     concluidaEm: null,
     criada: new Date().toISOString()
@@ -283,8 +405,23 @@ $('form').addEventListener('submit', e => {
   $('form').reset(); dica(); $('titulo').focus();
 });
 
+$('ordem').onchange = () => {
+  try { localStorage.setItem(ORDEM, $('ordem').value); } catch (e) {}
+  desenhar();
+};
+
+// ---------- páginas (escritório / faculdade) ----------
+function irPara() {
+  const h = location.hash.slice(1);
+  pagina = PAGINAS[h] ? h : 'escritorio';
+  if ($('modal').open) $('modal').close();
+  desenhar();
+}
+window.addEventListener('hashchange', irPara);
+
+// ---------- backup e migração ----------
 $('exportar').onclick = () => {
-  const blob = new Blob([JSON.stringify({versao: 1, tarefas}, null, 2)], {type: 'application/json'});
+  const blob = new Blob([JSON.stringify({versao: 3, escritorio: dados.escritorio, faculdade: dados.faculdade}, null, 2)], {type: 'application/json'});
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
   a.download = 'matriz-eisenhower-backup-' + new Date().toISOString().slice(0, 10) + '.json';
@@ -299,33 +436,33 @@ $('arquivo').onchange = e => {
   r.onload = () => {
     try {
       const d = JSON.parse(r.result);
-      const itens = Array.isArray(d) ? d : d.tarefas;
-      if (!Array.isArray(itens)) throw new Error('formato');
-      const ids = new Set(tarefas.map(t => t.id));
-      let novas = 0;
-      itens.forEach(t => {
-        if (t && t.id != null && t.titulo && Q[t.q] && !ids.has(t.id)) {
-          tarefas.push({id: t.id, titulo: String(t.titulo), detalhes: String(t.detalhes || ''), prazo: t.prazo || '',
-            q: t.q, feita: !!t.feita, concluidaEm: t.concluidaEm || null, criada: t.criada || new Date().toISOString()});
-          ids.add(t.id);
-          novas++;
-        }
-      });
+      let n = 0;
+      if (Array.isArray(d)) n = mesclar(pagina, d);                       // lista simples: vai para a página aberta
+      else if (d && (d.escritorio || d.faculdade)) n = mesclar('escritorio', d.escritorio) + mesclar('faculdade', d.faculdade);
+      else if (d && Array.isArray(d.tarefas)) n = mesclar(pagina, d.tarefas); // backup de versões anteriores
+      else throw new Error('formato');
       salvar(); desenhar();
-      $('aviso').textContent = novas + ' tarefa(s) importada(s).';
+      $('aviso').textContent = n + ' tarefa(s) importada(s).';
     } catch (err) {
-      $('aviso').textContent = 'Arquivo inválido. Use um backup exportado por este site.';
+      $('aviso').textContent = 'Não foi possível importar. Use um backup exportado por este site.';
     }
     e.target.value = '';
   };
   r.readAsText(f);
 };
+$('b-antigas').onclick = () => {
+  const n = mesclar(pagina, antigas());
+  salvar();
+  try { localStorage.removeItem(ANTIGA); } catch (e) {}
+  desenhar();
+  $('aviso').textContent = n + ' tarefa(s) trazida(s) para ' + PAGINAS[pagina].toLowerCase() + '.';
+};
 
-// Pede ao navegador para não apagar os dados automaticamente
+// ---------- início ----------
+try { const o = localStorage.getItem(ORDEM); if (o) $('ordem').value = o; } catch (e) {}
 try { if (navigator.storage && navigator.storage.persist) navigator.storage.persist(); } catch (e) {}
-
 dica();
-desenhar();
+irPara();
 </script>
 </body>
 </html>
