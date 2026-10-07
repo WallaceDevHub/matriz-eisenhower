@@ -83,6 +83,9 @@ dialog::backdrop{background:#1c243088}
 .acoes .principal{background:var(--q2);border-color:var(--q2);color:#fff}
 .acoes .principal.desfazer{background:var(--q3);border-color:var(--q3);color:#1c2430}
 .acoes .perigo{border-color:var(--q1);color:var(--q1)}
+.campos{padding:16px 18px;display:flex;flex-direction:column;gap:10px}
+.duplo{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+#e-detalhes{height:80px}
 
 @media (max-width:700px){
   #form{grid-template-columns:1fr 1fr}
@@ -172,18 +175,40 @@ dialog::backdrop{background:#1c243088}
 
 <dialog id="modal">
   <div class="topo" id="m-topo"><p id="m-quad"></p><h3 id="m-titulo"></h3></div>
-  <div class="corpo"><dl>
-    <dt>Status</dt><dd id="m-status"></dd>
-    <dt>Prazo</dt><dd id="m-prazo"></dd>
-    <dt>Esforço</dt><dd id="m-esforco"></dd>
-    <dt>Criada em</dt><dd id="m-criada"></dd>
-    <dt>Detalhes</dt><dd id="m-detalhes"></dd>
-  </dl></div>
-  <div class="acoes">
-    <button class="btn principal" id="m-toggle"></button>
-    <button class="btn perigo" id="m-excluir">Excluir</button>
-    <button class="btn" id="m-fechar">Fechar</button>
+  <div id="vista">
+    <div class="corpo"><dl>
+      <dt>Status</dt><dd id="m-status"></dd>
+      <dt>Prazo</dt><dd id="m-prazo"></dd>
+      <dt>Esforço</dt><dd id="m-esforco"></dd>
+      <dt>Criada em</dt><dd id="m-criada"></dd>
+      <dt>Detalhes</dt><dd id="m-detalhes"></dd>
+    </dl></div>
+    <div class="acoes">
+      <button class="btn principal" id="m-toggle"></button>
+      <button class="btn" id="m-editar">Editar</button>
+      <button class="btn perigo" id="m-excluir">Excluir</button>
+      <button class="btn" id="m-fechar">Fechar</button>
+    </div>
   </div>
+  <form id="edicao" hidden>
+    <div class="campos">
+      <label>Tarefa <input id="e-titulo" required maxlength="80"></label>
+      <div class="duplo">
+        <label>Urgente? <select id="e-urgente"></select></label>
+        <label>Importante? <select id="e-importante"></select></label>
+      </div>
+      <label>Detalhes <textarea id="e-detalhes" maxlength="500"></textarea></label>
+      <div class="duplo">
+        <label>Prazo <input id="e-prazo" type="date"></label>
+        <label>Esforço <select id="e-esforco"></select></label>
+      </div>
+      <p class="dica" id="e-dica"></p>
+    </div>
+    <div class="acoes">
+      <button class="btn cheio" type="submit">Salvar alterações</button>
+      <button class="btn" type="button" id="e-cancelar">Cancelar</button>
+    </div>
+  </form>
 </dialog>
 
 <script>
@@ -365,7 +390,9 @@ function abrir(id) {
   const tg = $('m-toggle');
   tg.textContent = t.feita ? 'Marcar como não cumprida' : 'Marcar como cumprida';
   tg.classList.toggle('desfazer', t.feita);
-  $('modal').showModal();
+  $('vista').hidden = false;
+  $('edicao').hidden = true;
+  if (!$('modal').open) $('modal').showModal();
 }
 
 $('m-toggle').onclick = () => {
@@ -378,6 +405,42 @@ $('m-excluir').onclick = () => {
   salvar(); desenhar(); $('modal').close();
 };
 $('m-fechar').onclick = () => $('modal').close();
+
+// ---------- edição da tarefa ----------
+['urgente', 'importante', 'esforco'].forEach(c => { $('e-' + c).innerHTML = $(c).innerHTML; });
+const quadEdicao = () => quadrante($('e-urgente').value === '1', $('e-importante').value === '1');
+function dicaEdicao() {
+  const n = quadEdicao();
+  $('e-dica').textContent = 'Quadrante: ' + Q[n].nome + ' (' + Q[n].desc.toLowerCase() + ').';
+}
+$('e-urgente').onchange = $('e-importante').onchange = dicaEdicao;
+$('m-editar').onclick = () => {
+  const t = tarefas().find(x => x.id === atual);
+  if (!t) return;
+  $('e-titulo').value = t.titulo;
+  $('e-urgente').value = (t.q === 1 || t.q === 3) ? '1' : '0';
+  $('e-importante').value = (t.q === 1 || t.q === 2) ? '1' : '0';
+  $('e-detalhes').value = t.detalhes;
+  $('e-prazo').value = t.prazo;
+  $('e-esforco').value = String(t.esforco);
+  dicaEdicao();
+  $('vista').hidden = true;
+  $('edicao').hidden = false;
+  $('e-titulo').focus();
+};
+$('e-cancelar').onclick = () => { $('edicao').hidden = true; $('vista').hidden = false; };
+$('edicao').addEventListener('submit', e => {
+  e.preventDefault();
+  const t = tarefas().find(x => x.id === atual);
+  const titulo = $('e-titulo').value.trim();
+  if (!t || !titulo) return;
+  t.titulo = titulo;
+  t.detalhes = $('e-detalhes').value.trim();
+  t.prazo = $('e-prazo').value;
+  t.esforco = +$('e-esforco').value;
+  t.q = quadEdicao();
+  salvar(); desenhar(); abrir(atual);
+});
 $('modal').addEventListener('click', e => { if (e.target === $('modal')) $('modal').close(); });
 
 function dica() {
